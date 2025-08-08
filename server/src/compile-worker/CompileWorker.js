@@ -308,7 +308,7 @@ window.SwiftUIWasmRuntime = SwiftUIWasmRuntime;
       '-v', `${workDir}:/workspace`,
       '-w', '/workspace',
       image,
-      'carton', 'bundle', '-c', 'release'
+      'carton', 'bundle'
     ];
 
     const logs = [];
@@ -360,7 +360,7 @@ window.SwiftUIWasmRuntime = SwiftUIWasmRuntime;
 
     return new Promise((resolve, reject) => {
       let stderr = '';
-      const child = spawn('carton', ['bundle', '-c', 'release'], { cwd: workDir, stdio: ['ignore', 'pipe', 'pipe'] });
+      const child = spawn('carton', ['bundle'], { cwd: workDir, stdio: ['ignore', 'pipe', 'pipe'] });
 
       child.stdout.on('data', (d) => { const t = d.toString(); logs.push(...t.split('\n')); });
       child.stderr.on('data', (d) => { const t = d.toString(); warnings.push(...t.split('\n')); stderr += t; });
