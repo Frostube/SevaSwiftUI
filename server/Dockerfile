@@ -1,10 +1,12 @@
 FROM ghcr.io/swiftwasm/carton:latest
 
 WORKDIR /app
-COPY package.json package-lock.json* ./
+# Copy server package manifests from repo root
+COPY server/package.json server/package-lock.json* ./
 RUN npm install --omit=dev
 
-COPY src ./src
+# Copy server source
+COPY server/src ./src
 
 # Environment
 ENV NODE_ENV=production
