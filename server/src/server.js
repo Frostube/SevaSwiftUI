@@ -25,11 +25,17 @@ app.use(helmet({
   },
 }));
 
-// CORS configuration
+// CORS configuration with env override
+const corsOriginsEnv = process.env.CORS_ORIGINS || '';
+const defaultOrigins = process.env.NODE_ENV === 'production'
+  ? ['http://localhost:3000'] // allow local dev by default
+  : ['http://localhost:3000'];
+const allowedOrigins = corsOriginsEnv
+  ? corsOriginsEnv.split(',').map(o => o.trim()).filter(Boolean)
+  : defaultOrigins;
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://swiftui-preview.yourdomain.com'] 
-    : ['http://localhost:3000'],
+  origin: allowedOrigins,
   credentials: true
 }));
 
