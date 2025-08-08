@@ -393,7 +393,7 @@ window.SwiftUIWasmRuntime = SwiftUIWasmRuntime;
   }
 
   async createSwiftPMProject(workDir, userCode) {
-    const pkg = `// swift-tools-version:5.9\nimport PackageDescription\n\nlet package = Package(\n  name: "PreviewApp",\n  platforms: [.macOS(.v12)],\n  products: [.executable(name: "PreviewApp", targets: ["PreviewApp"])],\n  dependencies: [.package(url: "https://github.com/TokamakUI/Tokamak.git", from: "0.12.0")],\n  targets: [.executableTarget(name: "PreviewApp", dependencies: [.product(name: "TokamakDOM", package: "Tokamak")])]\n)\n`;
+    const pkg = `// swift-tools-version:5.9\nimport PackageDescription\n\nlet package = Package(\n  name: "PreviewApp",\n  platforms: [.macOS(.v12)],\n  products: [.executable(name: "PreviewApp", targets: ["PreviewApp"])],\n  dependencies: [\n    // Use branch to avoid tag resolution issues in ephemeral builders\n    .package(url: "https://github.com/TokamakUI/Tokamak.git", branch: "main")\n  ],\n  targets: [\n    .executableTarget(\n      name: "PreviewApp",\n      dependencies: [.product(name: "TokamakDOM", package: "Tokamak")]\n    )\n  ]\n)\n`;
 
     const sourcesDir = path.join(workDir, 'Sources', 'PreviewApp');
     await fs.mkdir(sourcesDir, { recursive: true });
